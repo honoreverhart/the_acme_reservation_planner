@@ -18,6 +18,15 @@ const createRestaurant = async (restaurantName) => {
   return result.rows[0];
 };
 
+const getReservations = async () =>{
+    const SQL = `
+    SELECT id, date, party_count, restaurant_id, customer_id
+    FROM reservations`;
+
+  const result = await client.query(SQL);
+  return result.rows;
+}
+
 const createReservation = async (
   customerName,
   restaurantName,
@@ -77,6 +86,7 @@ const init = async () => {
         id UUID PRIMARY KEY,
         name VARCHAR(50) NOT NULL
         );
+        
         CREATE TABLE reservations(
         id UUID PRIMARY KEY,
         date DATE NOT NULL,
@@ -110,6 +120,7 @@ const init = async () => {
   await fetchCustomers();
   await fetchRestaurants();
   await destroyReservation();
+  await getReservations();
 
 };
 
@@ -120,6 +131,7 @@ module.exports = {
   createReservation,
   fetchCustomers,
   fetchRestaurants, 
-  destroyReservation
+  destroyReservation,
+  getReservations
 
 };

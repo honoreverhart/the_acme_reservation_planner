@@ -23,8 +23,7 @@ app.get("/api/restaurants", async (req, res, next) => {
 
 app.get("/api/reservations", async (req, res, next) => {
   try {
-    const { customerName, restaurantName, date, partyCount } = req.body;
-    const result = await db.createReservation(customerName, restaurantName, date, partyCount);
+    const result = await db.getReservations();
     res.send(result);
   } catch (ex) {
     next(ex);
@@ -39,6 +38,17 @@ app.post("/api/customers", async (req, res, next) => {
     next(ex);
   }
 });
+
+
+app.post("/api/reservations", async (req, res, next) => {
+    try {
+      const {customerName, restaurantName, date, partyCount } = req.body;
+      const result = await db.createReservation(customerName, restaurantName, date, partyCount);
+      res.send(result);
+    } catch (ex) {
+      next(ex);
+    }
+  });
 
 app.delete(
   "/api/customers/:customer_id/reservations/:id",
